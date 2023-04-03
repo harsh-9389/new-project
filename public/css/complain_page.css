@@ -1,0 +1,62 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    margin: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+body{
+    background:linear-gradient(135deg, #2C3E50 0%, #4CA1AF 80%) ;
+    background-attachment: fixed;
+}
+
+.details input{
+    margin: 1rem;
+    font-size: 1.1rem;
+    border-radius: 2rem;
+    outline: none;
+    border: none;
+    padding: 0.7rem;
+}
+
+.issue{
+    margin-left: 1rem;
+}
+
+.issue textarea{
+    width: 91%;
+    border-radius: 2rem;
+    padding: 1rem;
+    outline: none;
+}
+
+.issue button{
+    background: rgb(122, 240, 122);
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 1rem;
+}
+.issue button:hover{
+    cursor: pointer;
+    background: rgb(47, 190, 47);
+}
+
+.submit button{
+    background: rgb(230, 112, 70);
+    font-family: 'Times New Roman', Times, serif;
+    padding: 0.6rem;
+    margin: 3rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 1rem;
+}
+.submit button:hover{
+    cursor: pointer;
+    background: rgb(199, 101, 65);
+    transform: scale(1.1);
+}
