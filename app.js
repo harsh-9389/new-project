@@ -62,34 +62,37 @@ app.post('/user_details',uploadfile.single('text'),async(req,res)=>{
         console.log(err)
     }
 })
-
-app.get('/admin',function(req,res){
-    Video.find({}).sort({ date: -1 }).then((result)=>{
-        var data=[]
-        data.push(1)
-        result.forEach(function(model){
-            data.push(1)
-            let videoid=model._doc.videoname
-            User.findOne({_id:model._doc.idofuser}).then((result1)=>{
-                data.push(1)
-                data.push([videoid,result1[0]._doc.Name,result1[0]._doc.phonenumber])
-            })
-        })
-            console.log(data)
-            res.render('admin',{data:data})
-        })
+app.get('/admin',async(req,res)=>{
+    var data=[]
+    const video=await Video.find({}).sort({date:-1})
+    console.log(video)
+    video.forEach(async (model)=>{
+        let videoid=model._doc.videoname
+        const user= await User.findOne({_id:model._doc.idofuser})
+        await data.push([videoid,user._doc.Name,user._doc.phonenumber])
+        if(data.length===video.length){
+              console.log(data,video.length)
+              res.render('admin',{data:data})
+        }     
     })
+    })
+app.post('/admin/buttons',function(req,res){
+    console.log(req.body.submit)
+    res.redirect('/adminvideos?link='+req.body.submit)
+})
+
 app.get('/adminvideos',function(req,res){
-    const videolink=req.query.link
-    const filePath = path.join(__dirname, 'videos\\3bb18b0011ab1d58cede99e0a8aa0d93.mp4');
-    const stat = fs.statSync(filePath);
-    const fileSize = stat.size;
-    const range = req.headers.range;
-    const headers = {
-        'Content-Length': fileSize,
-        'Content-Type': 'video/mp4',
-      };
-    res.writeHead(200, headers);
+    console.log(req.query.link)
+    res.sendFile(__dirname+'\\videos\\'+req.query.link+'.mp4');
+    // const filePath = path.join(__dirname, 'videos\\e1e1d851ffbff846f21f0edd2a7b6bde.mp4');
+    // const stat = fs.statSync(filePath);
+    // const fileSize = stat.size;
+    // const range = req.headers.range;
+    // const headers = {
+    //     'Content-Length': fileSize,
+    //     'Content-Type': 'video/mp4',
+    //   };
+    // res.writeHead(200, headers);
 })
 app.listen(3000,()=>{
     console.log('server running')
