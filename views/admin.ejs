@@ -7,14 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-    <div style="display:grid">
-        <p><%= data %></p>
+    <div style="display:grid;row-gap:20px">
         <% data.forEach(function(user){ %>
-        <div style="display: flex;">
-              <p><%= user[1]._doc.Name %></p>
-              <p><%= user[1]._doc.phonenumber %></p>
-              <p><%= user[0] %></p>
-              <button >See Video</button>
+        <div style="display: flex;column-gap: 10px;">
+              <p><%= user[1] %></p>
+              <p><%= user[2] %></p>
+              <form method="post" action="/admin/buttons">
+              <button type="submit" name="submit" id="submit" value="<%= user[0] %>">See Video</button></form>
         </div>
         <% }) %>
     </div>
