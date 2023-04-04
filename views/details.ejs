@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,24 +25,33 @@
         <script>
             let latitude='-'
             let longitude='-'
+            let chunks=[]
             if (navigator.geolocation) {
-  global.navigator.geolocation.getCurrentPosition({
+  navigator.geolocation.getCurrentPosition(
     function(pos){
         latitude = String(position.coords.latitude),
         longitude =String(position.coords.longitude)
     }
+  ,function(err){
+    console.log('error')
   })}
-  const data={
+  document.getElementById('details').addEventListener('click',(ev)=>{
+  const data1={
     location:latitude+'+'+longitude
   }
   const jsonData = JSON.stringify(data);
-//   const formData=new FormData()
-const formData=new FormData()
-formData.append('location',jsonData)
+  chunks.push(ev.data)
+  chunks.push(jsonData)
+  let blob=new Blob(chunks,{'type':'text/plain'})
+  chunks=[]
+  const formData=new FormData()
+    formData.append('location',blob,'data.txt')
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', '/user_details/:id');
-  xhr.send(formData).then(()=>{console.log("done")})
-//   xhr.send(formData);
+  // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+  xhr.onload = function() {
+  console.log(xhr.responseText);}
+  xhr.open('POST', '/user_details');
+  xhr.send(formData);})
         </script>
 </body>
 </html>
