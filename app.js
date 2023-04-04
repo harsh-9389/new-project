@@ -14,55 +14,82 @@ mongoose.connect('mongodb://localhost:27017/shopDB',{useNewURLParser:true,useUni
     console.log('connected')
 })
 const VideoSchema=new mongoose.Schema({
-    videoname:String
+    idofuser:String,
+    videoname:String,
+    date:Number
 })
 const UserScehma=new mongoose.Schema({
-    idofvideo:String,
     phonenumber:Number,
     Name:String,
-    location:String
+    date:Number
 })
 const Video=new mongoose.model('videos',VideoSchema)
 const User=new mongoose.model('userss',UserScehma)
 const upload = multer({ dest: 'uploads/' });
+const uploadfile=multer({dest:'uploadfiles/'})
 var filename=''
+var idoduser=''
 app.get('/upload-video',async(req,res)=>{
+    idofuser=req.query.id
     res.render('livestream')
 })
 app.post('/upload-video', upload.single('video'),async(req,res)=>{
-    try{
-    const source = await fs.createReadStream(req.file.path);
-  const destination = await fs.createWriteStream(`videos/${req.file.filename}.mp4`);
+  const source = await fs.createReadStream(req.file.path);
+  const destination =await fs.createWriteStream(`videos/${req.file.filename}.mp4`);
   source.pipe(destination);
   let filename=req.file.filename
   const video=await new Video({
-    videoname:req.file.filename,
+    idofuser:idofuser,
+    videoname:filename,
+    date:Date.now()
   })
-  console.log(filename)
   const video1=await video.save()
-  res.redirect(`/user_details?success=1`)
-    }catch(err){
-        console.log(err)
-    }
+  res.redirect("/")
 })
-var id=''
 app.get('/user_details',async(req,res)=>{
-    console.log(req.query.success)
-    id=req.params.id
     res.render('details')
 })
-app.post('/user_details',async(req,res)=>{
+app.post('/user_details',uploadfile.single('text'),async(req,res)=>{
     try{
-    console.log(req.query)
+        console.log(req)
     const user=await new User({
-        idofvideo:id,
         phonenumber:req.body.number,
-        Name:req.body.Name
+        Name:req.body.Name,
+        date:Date.now()
     })
     const user1=await user.save()
-    res.redirect('/')}catch(err){
+    res.redirect('upload-video/?id='+user._id)}catch(err){
         console.log(err)
     }
+})
+
+app.get('/admin',function(req,res){
+    Video.find({}).sort({ date: -1 }).then((result)=>{
+        var data=[]
+        data.push(1)
+        result.forEach(function(model){
+            data.push(1)
+            let videoid=model._doc.videoname
+            User.findOne({_id:model._doc.idofuser}).then((result1)=>{
+                data.push(1)
+                data.push([videoid,result1[0]._doc.Name,result1[0]._doc.phonenumber])
+            })
+        })
+            console.log(data)
+            res.render('admin',{data:data})
+        })
+    })
+app.get('/adminvideos',function(req,res){
+    const videolink=req.query.link
+    const filePath = path.join(__dirname, 'videos\\3bb18b0011ab1d58cede99e0a8aa0d93.mp4');
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+    const headers = {
+        'Content-Length': fileSize,
+        'Content-Type': 'video/mp4',
+      };
+    res.writeHead(200, headers);
 })
 app.listen(3000,()=>{
     console.log('server running')

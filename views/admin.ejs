@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display:grid">
+        <p><%= data %></p>
+        <% data.forEach(function(user){ %>
+        <div style="display: flex;">
+              <p><%= user[1]._doc.Name %></p>
+              <p><%= user[1]._doc.phonenumber %></p>
+              <p><%= user[0] %></p>
+              <button >See Video</button>
+        </div>
+        <% }) %>
+    </div>
+</body>
+</html>

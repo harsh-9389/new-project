@@ -12,7 +12,7 @@
     <div style="display: flex;margin:auto">
     <button id="btnStart"style="width:100px;padding-inline:10px;padding-block: 5px;background-color:violet">Start Recording</button>
     <!-- <button id="btnStop">Stop Recording</button> -->
-    <form  action="/user_details/:id" action="get">
+    <form  action="/" action="get">
     <button  id="btnStop" type="submit" style="width:100px;padding-inline:10px;padding-block: 5px;background-color:violet">Stop Video</button>
 </form>
 <style>
@@ -70,16 +70,13 @@
                 let blob=new Blob(chunks,{'type':'video/mp4'})
                 chunks=[]
                 let videoURL=window.URL.createObjectURL(blob)
-                // stop.href=videoURL
-                // video.style.display='none'
-                // form.style.display='grid'
-                // const data={number:number.value,Name:Name.value}
-                // jsonData=JSON.stringify(data)
                 const formData = new FormData();
                 // console.log(jsonData)
                 formData.append('video', blob, 'my-video.mp4');
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/upload-video');
+                xhr.onload = function() {
+                console.log(xhr.responseText);}
                 xhr.send(formData);
                 // xhr.send(FD)
             }
