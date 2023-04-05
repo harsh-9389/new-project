@@ -25,5 +25,14 @@ reporter web app which can help police in several ways.
 8.MongoDb  
 9.MongooseJs  
 10.AJAX  
-11.multer  
+11.Multer  
+* * *
+#### Contributors:-
+1.[Harsh Pratap Singh](https://github.com/harsh-9389)  
+2.[Vedant Pandey](https://github.com/jgyfutub)  
+3.[Vasant Sharma](https://github.com/sharmavasant)  
+* * *
+#### Presentation:-
+* * *
+#### Video link:-
 * * *
