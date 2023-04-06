@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="complain_page.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="container">
+        <form class="form" action="/complaint" method="POST" enctype="multipart/form-data"> 
+            <div class="details">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="number" name="phone" placeholder="Phone number" required>
+            </div>
+            <div class="issue">
+                <textarea placeholder="Write your issue here...." name="issue" id="issue" cols="30" rows="10" required></textarea>
+                <!-- <button class="upload" onclick="document.getElementById('file').click()"> <i class='bx bx-upload'>Upload Proof</i> </button> -->
+                <input type="file" id="file" name="proof">
+            </div>
+            <div class="submit">
+                <button type="submit">Submit Report</button>
+            </div>                
+        </form>
+    </div>
+</body>
+</html>

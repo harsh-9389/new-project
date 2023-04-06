@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <form method="post" action="/user_details" style="display:grid;margin-left:auto;margin-right:auto;border-style:solid;border-width:2px;border-color:black;margin-top: 50px;padding-block: 15px;width:180px;padding-left: 30px;background-image:linear-gradient(violet,blue);border-radius: 10px;">
+            <p style="margin-bottom: 5px;">Phone Number</p>
+            <input type="number" name="number" style="width:150px;height:20px;margin-bottom: 10px;border-radius: 5px;"  required/>
+            <p style="margin-bottom: 5px;">Name</p>
+            <input type="text" name="Name" style="width:150px;height:20px;margin-bottom: 10px;border-radius: 5px;" required/>
+            <button type="submit" id="details"style="width:100px;padding-inline:10px;padding-block: 5px;margin-bottom: 10px;background-color:violet" name="details" >Submit</button>
+        </form>
+        <style>
+          #details:hover{
+            background-color: blueviolet;
+          }
+          #details:active{
+            background-color: blue;
+          }
+        </style>
+        <script>
+            let latitude='-'
+            let longitude='-'
+            let chunks=[]
+            if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+        latitude = String(position.coords.latitude),
+        longitude =String(position.coords.longitude)
+    }
+  ,function(err){
+    console.log('error')
+  })}
+  document.getElementById('details').addEventListener('click',(ev)=>{
+  const data1={
+    location:latitude+'+'+longitude
+  }
+  const jsonData = JSON.stringify(data);
+  chunks.push(ev.data)
+  chunks.push(jsonData)
+  let blob=new Blob(chunks,{'type':'text/plain'})
+  chunks=[]
+  const formData=new FormData()
+    formData.append('location',blob,'data.txt')
+  const xhr = new XMLHttpRequest();
+  // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+  xhr.onload = function() {
+  console.log(xhr.responseText);}
+  xhr.open('POST', '/user_details');
+  xhr.send(formData);})
+        </script>
+</body>
+</html>
