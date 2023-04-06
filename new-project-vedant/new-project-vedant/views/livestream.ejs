@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display:grid">
+    <video controls style="display: block;" ></video>
+    <div style="display: flex;margin:auto">
+    <button id="btnStart"style="width:100px;padding-inline:10px;padding-block: 5px;background-color:violet">Start Recording</button>
+    <!-- <button id="btnStop">Stop Recording</button> -->
+    <form  action="/" action="get">
+    <button  id="btnStop" type="submit" style="width:100px;padding-inline:10px;padding-block: 5px;background-color:violet">Stop Video</button>
+</form>
+<style>
+    #btnStop:hover,#btnStart:hover{
+            background-color: blueviolet;
+          }
+          #btnStop:active,#btnStart:active{
+            background-color: blue;
+          }
+</style>
+</div></div>
+    <!-- <video id="vid2" controls></video> -->
+    <script>
+
+        let constraintObj={
+            audio:true,
+            video:{
+                facingMode:'enivroment',
+                width:{min:400,ideal:1280,max:1920},
+                height:{min:200,ideal:1280,max:1000}
+        }}
+        navigator.mediaDevices.getUserMedia(constraintObj).then(function(mediaStreamObj){
+            let video=document.querySelector('video')
+            let formId=document.getElementById('form')
+            if('srcObject' in video){
+                video.srcObject=mediaStreamObj
+            }
+            else{
+                video.src=window.URL.createObjectURL(mediaStreamObj)
+            }
+            video.onloadedmetadata=function(ev){
+                video.play()
+            }
+            let start=document.getElementById('btnStart')
+            let stop=document.getElementById('btnStop')
+            let vidSave=document.getElementById('vid2')
+            let form=document.getElementById('form')
+            let number=document.getElementById('number')
+            let Name=document.getElementById('Name')
+            let mediaRecorder=new MediaRecorder(mediaStreamObj)
+            let chunks=[]
+            start.addEventListener('click',(ev)=>{
+                mediaRecorder.start()
+                console.log(mediaRecorder.state)
+             })
+            stop.addEventListener('click',(ev)=>{ 
+                mediaRecorder.stop()
+                console.log(mediaRecorder.state)
+             })
+            mediaRecorder.ondataavailable=function(ev){
+
+                chunks.push(ev.data)
+            }
+            mediaRecorder.onstop=(ev)=>{
+                let blob=new Blob(chunks,{'type':'video/mp4'})
+                chunks=[]
+                let videoURL=window.URL.createObjectURL(blob)
+                const formData = new FormData();
+                // console.log(jsonData)
+                formData.append('video', blob, 'my-video.mp4');
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/upload-video');
+                xhr.onload = function() {
+                console.log(xhr.responseText);}
+                xhr.send(formData);
+                // xhr.send(FD)
+            }
+        }).catch(function(err){
+            console.log(err)
+        })
+    </script>
+</body>
+</html>
