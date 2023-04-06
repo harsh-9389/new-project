@@ -30,7 +30,6 @@ reporter web app which can help police in several ways.
 #### Contributors:-
 1.[Harsh Pratap Singh](https://github.com/harsh-9389)  
 2.[Vedant Pandey](https://github.com/jgyfutub)  
-3.[Vasant Sharma](https://github.com/sharmavasant)  
 * * *
 #### Presentation:-
 * * *
