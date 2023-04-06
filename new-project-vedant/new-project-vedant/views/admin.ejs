@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style (2).css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <img src="/public/img/logo.png" class="logo" alt="">
+        </nav>
+        <div style="display:flex;justify-content:center;">
+            <button style="background-color:aqua" id="images">FIRS With Images</button>
+            <button style="background-color:aqua" id="videos">FIRS with Videos</button>
+        </div>
+        <div class="block" id="block1" style="display:none">
+            <% data.forEach(function(complaint){ %>
+            <h3>Complaint No.1 : </h3>
+            <div class="details">
+                <span>Name: </span> 
+                <span class="data"> <%= complaint[1] %> </span>
+            </div>
+            <div class="details">
+                <span>Phone: </span> 
+                <span class="data"> <%= complaint[2]%> </span>
+            </div>
+            <div class="details">
+                <span>Date: </span> 
+                <span class="data"> <%= complaint[3] %> </span>
+            </div>
+            <div class="details">
+                <span>Video Link: </span> 
+                <form method="post" action="/admin/buttons">
+                <button class="data" type="submit" name="submit" value="<%= complaint[0] %>"> See Video </button>
+            </form>
+            <% }) %>
+            </div></div>
+            <div class="block" id="block2" style="display:block">
+                <% firs.forEach(function(complaint1){ %>
+                <h3>Complaint No.1 : </h3>
+                <div class="details">
+                    <span>Name: </span> 
+                    <span class="data"> <%= complaint1._doc.username %> </span>
+                </div>
+                <div class="details">
+                    <span>Phone: </span> 
+                    <span class="data"> <%= complaint1._doc.phone%> </span>
+                </div>
+                <div class="details">
+                    <span>issue: </span> 
+                    <span class="data"> <%= complaint1._doc.issue %> </span>
+                </div>
+                <div class="details">
+                    <!-- <img src='C:\Users\Acer\Downloads\new-project-vedant\uploads\1680777990985-2022-06-23.png'> -->
+                    <img src="<%= complaint1._doc.image %>">
+                </div>
+            <% }) %>
+        </div>
+        <script>
+            images=document.getElementById("images")
+            videos=document.getElementById("videos")
+            block1=document.getElementById("block1")
+            block2=document.getElementById("block2")
+            videos.addEventListener('click',function(ev){
+                block1.style.display='block'
+                block2.style.display='none'
+            })
+            images.addEventListener('click',function(ev){
+                block1.style.display='none'
+                block2.style.display='block'
+            })
+        </script>
+    </div>
+</body>
+</html>
